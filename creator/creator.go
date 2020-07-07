@@ -357,6 +357,10 @@ func (c *Creator) RotateDeg(angleDeg int64) error {
 	return nil
 }
 
+func (c *Creator) GetContext() *DrawContext {
+	return &c.context
+}
+
 // Context returns the current drawing context.
 func (c *Creator) Context() DrawContext {
 	return c.context
