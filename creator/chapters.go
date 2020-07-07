@@ -244,7 +244,7 @@ func (chap *Chapter) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 		}
 
 		// The first block is always appended to the last..
-		blocks[len(blocks)-1].mergeBlocks(newBlocks[0])
+		blocks[len(blocks)-1].MergeBlocks(newBlocks[0])
 		blocks = append(blocks, newBlocks[1:]...)
 
 		ctx = c

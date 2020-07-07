@@ -152,7 +152,7 @@ func (div *Division) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 		if len(pageblocks) > 0 {
 			// If there are pageblocks already in place.
 			// merge the first block in with current Block and append the rest.
-			pageblocks[len(pageblocks)-1].mergeBlocks(newblocks[0])
+			pageblocks[len(pageblocks)-1].MergeBlocks(newblocks[0])
 			pageblocks = append(pageblocks, newblocks[1:]...)
 		} else {
 			pageblocks = append(pageblocks, newblocks[0:]...)

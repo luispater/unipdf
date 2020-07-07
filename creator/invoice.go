@@ -869,7 +869,7 @@ func (i *Invoice) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 		if len(blocks) == 0 {
 			blocks = newBlocks
 		} else if len(newBlocks) > 0 {
-			blocks[len(blocks)-1].mergeBlocks(newBlocks[0])
+			blocks[len(blocks)-1].MergeBlocks(newBlocks[0])
 			blocks = append(blocks, newBlocks[1:]...)
 		}
 

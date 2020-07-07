@@ -305,7 +305,7 @@ func (blk *Block) drawToPage(page *model.PdfPage) error {
 
 	// Merge resources for blocks which were created from pages.
 	// Necessary for adding resources which do not appear in the block contents.
-	if err = mergeResources(blk.resources, page.Resources); err != nil {
+	if err = MergeResources(blk.resources, page.Resources); err != nil {
 		return err
 	}
 
@@ -343,7 +343,7 @@ func (blk *Block) Draw(d Drawable) error {
 	}
 
 	for _, newBlock := range blocks {
-		if err := blk.mergeBlocks(newBlock); err != nil {
+		if err := blk.MergeBlocks(newBlock); err != nil {
 			return err
 		}
 	}
@@ -363,7 +363,7 @@ func (blk *Block) DrawWithContext(d Drawable, ctx DrawContext) error {
 	}
 
 	for _, newBlock := range blocks {
-		if err := blk.mergeBlocks(newBlock); err != nil {
+		if err := blk.MergeBlocks(newBlock); err != nil {
 			return err
 		}
 	}
@@ -371,8 +371,8 @@ func (blk *Block) DrawWithContext(d Drawable, ctx DrawContext) error {
 	return nil
 }
 
-// mergeBlocks appends another block onto the block.
-func (blk *Block) mergeBlocks(toAdd *Block) error {
+// MergeBlocks appends another block onto the block.
+func (blk *Block) MergeBlocks(toAdd *Block) error {
 	err := mergeContents(blk.contents, blk.resources, toAdd.contents, toAdd.resources)
 	if err != nil {
 		return err
@@ -595,9 +595,9 @@ func mergeContents(contents *contentstream.ContentStreamOperations, resources *m
 	return nil
 }
 
-// mergeResources adds all resources from src which are missing from dst.
+// MergeResources adds all resources from src which are missing from dst.
 // For now, the method only merges colorspaces.
-func mergeResources(src, dst *model.PdfPageResources) error {
+func MergeResources(src, dst *model.PdfPageResources) error {
 	// Merge colorspaces.
 	colorspaces, _ := src.GetColorspaces()
 	if colorspaces != nil && len(colorspaces.Colorspaces) > 0 {

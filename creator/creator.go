@@ -21,7 +21,7 @@ import (
 // content onto imported PDF pages, etc.
 type Creator struct {
 	pages      []*model.PdfPage
-	pageBlocks map[*model.PdfPage]*Block
+	PageBlocks map[*model.PdfPage]*Block
 
 	activePage *model.PdfPage
 
@@ -134,7 +134,7 @@ type margins struct {
 func New() *Creator {
 	c := &Creator{}
 	c.pages = []*model.PdfPage{}
-	c.pageBlocks = map[*model.PdfPage]*Block{}
+	c.PageBlocks = map[*model.PdfPage]*Block{}
 	c.SetPageSize(PageSizeLetter)
 
 	m := 0.1 * c.pageWidth
@@ -566,7 +566,7 @@ func (c *Creator) Finalize() error {
 		}
 
 		// Draw page blocks.
-		block, ok := c.pageBlocks[page]
+		block, ok := c.PageBlocks[page]
 		if !ok {
 			continue
 		}
@@ -629,15 +629,15 @@ func (c *Creator) Draw(d Drawable) error {
 		}
 
 		page := c.getActivePage()
-		if pageBlock, ok := c.pageBlocks[page]; ok {
-			if err := pageBlock.mergeBlocks(block); err != nil {
+		if pageBlock, ok := c.PageBlocks[page]; ok {
+			if err := pageBlock.MergeBlocks(block); err != nil {
 				return err
 			}
-			if err := mergeResources(block.resources, pageBlock.resources); err != nil {
+			if err := MergeResources(block.resources, pageBlock.resources); err != nil {
 				return err
 			}
 		} else {
-			c.pageBlocks[page] = block
+			c.PageBlocks[page] = block
 		}
 	}
 
