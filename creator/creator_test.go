@@ -2783,7 +2783,7 @@ func TestCompressStreams(t *testing.T) {
 		c.SetPdfWriterAccessFunc(func(w *model.PdfWriter) error {
 			page := c.pages[0]
 
-			// Need to add Times to the page resources as it is used in the raw content stream.
+			// Need to add Times to the page Resources as it is used in the raw content stream.
 			times, err := model.NewStandard14Font(model.TimesRomanName)
 			if err != nil {
 				return err

@@ -581,16 +581,16 @@ func (p *StyledParagraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawCon
 
 // Draw block on specified location on Page, adding to the content stream.
 func drawStyledParagraphOnBlock(blk *Block, p *StyledParagraph, lines [][]*TextChunk, ctx DrawContext) (DrawContext, [][]*TextChunk, error) {
-	// Find first free index for the font resources of the paragraph.
+	// Find first free index for the font Resources of the paragraph.
 	num := 1
 	fontName := core.PdfObjectName(fmt.Sprintf("Font%d", num))
-	for blk.resources.HasFontByName(fontName) {
+	for blk.Resources.HasFontByName(fontName) {
 		num++
 		fontName = core.PdfObjectName(fmt.Sprintf("Font%d", num))
 	}
 
-	// Add default font to the page resources.
-	err := blk.resources.SetFontByName(fontName, p.defaultStyle.Font.ToPdfObject())
+	// Add default font to the page Resources.
+	err := blk.Resources.SetFontByName(fontName, p.defaultStyle.Font.ToPdfObject())
 	if err != nil {
 		return ctx, nil, err
 	}
@@ -599,7 +599,7 @@ func drawStyledParagraphOnBlock(blk *Block, p *StyledParagraph, lines [][]*TextC
 	defaultFontName := fontName
 	defaultFontSize := p.defaultStyle.FontSize
 
-	// Add the fonts of all chunks to the page resources.
+	// Add the fonts of all chunks to the page Resources.
 	relativePos := p.positioning.isRelative()
 	var fonts [][]core.PdfObjectName
 	var yOffset float64
@@ -619,7 +619,7 @@ func drawStyledParagraphOnBlock(blk *Block, p *StyledParagraph, lines [][]*TextC
 
 			fontName = core.PdfObjectName(fmt.Sprintf("Font%d", num))
 
-			err := blk.resources.SetFontByName(fontName, style.Font.ToPdfObject())
+			err := blk.Resources.SetFontByName(fontName, style.Font.ToPdfObject())
 			if err != nil {
 				return ctx, nil, err
 			}

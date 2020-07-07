@@ -22,9 +22,9 @@ import (
 // where each Drawable object can output one or more blocks, each representing content for separate pages
 // (typically needed when Page breaks occur).
 type Block struct {
-	// Block contents and resources.
+	// Block contents and Resources.
 	contents  *contentstream.ContentStreamOperations
-	resources *model.PdfPageResources
+	Resources *model.PdfPageResources
 
 	// Positioning: relative / absolute.
 	positioning positioning
@@ -50,7 +50,7 @@ type Block struct {
 func NewBlock(width float64, height float64) *Block {
 	b := &Block{}
 	b.contents = &contentstream.ContentStreamOperations{}
-	b.resources = model.NewPdfPageResources()
+	b.Resources = model.NewPdfPageResources()
 	b.width = width
 	b.height = height
 	return b
@@ -76,9 +76,9 @@ func NewBlockFromPage(page *model.PdfPage) (*Block, error) {
 	b.contents = operations
 
 	if page.Resources != nil {
-		b.resources = page.Resources
+		b.Resources = page.Resources
 	} else {
-		b.resources = model.NewPdfPageResources()
+		b.Resources = model.NewPdfPageResources()
 	}
 
 	mbox, err := page.GetMediaBox()
@@ -272,7 +272,7 @@ func (blk *Block) translate(tx, ty float64) {
 }
 
 // drawToPage draws the block on a PdfPage. Generates the content streams and appends to the PdfPage's content
-// stream and links needed resources.
+// stream and links needed Resources.
 func (blk *Block) drawToPage(page *model.PdfPage) error {
 
 	// TODO(gunnsth): Appears very wasteful to do this all the time.
@@ -298,14 +298,14 @@ func (blk *Block) drawToPage(page *model.PdfPage) error {
 	}
 
 	// Merge the contents into ops.
-	err = mergeContents(ops, page.Resources, blk.contents, blk.resources)
+	err = mergeContents(ops, page.Resources, blk.contents, blk.Resources)
 	if err != nil {
 		return err
 	}
 
-	// Merge resources for blocks which were created from pages.
-	// Necessary for adding resources which do not appear in the block contents.
-	if err = MergeResources(blk.resources, page.Resources); err != nil {
+	// Merge Resources for blocks which were created from pages.
+	// Necessary for adding Resources which do not appear in the block contents.
+	if err = MergeResources(blk.Resources, page.Resources); err != nil {
 		return err
 	}
 
@@ -373,7 +373,7 @@ func (blk *Block) DrawWithContext(d Drawable, ctx DrawContext) error {
 
 // MergeBlocks appends another block onto the block.
 func (blk *Block) MergeBlocks(toAdd *Block) error {
-	err := mergeContents(blk.contents, blk.resources, toAdd.contents, toAdd.resources)
+	err := mergeContents(blk.contents, blk.Resources, toAdd.contents, toAdd.Resources)
 	if err != nil {
 		return err
 	}
@@ -387,7 +387,7 @@ func (blk *Block) MergeBlocks(toAdd *Block) error {
 }
 
 // mergeContents merges contents and content streams.
-// Active in the sense that it modified the input contents and resources.
+// Active in the sense that it modified the input contents and Resources.
 func mergeContents(contents *contentstream.ContentStreamOperations, resources *model.PdfPageResources,
 	contentsToAdd *contentstream.ContentStreamOperations, resourcesToAdd *model.PdfPageResources) error {
 
@@ -395,10 +395,10 @@ func mergeContents(contents *contentstream.ContentStreamOperations, resources *m
 	//    It would be more efficient to perform the merge at the very and when we have all the "blocks"
 	//    for each page.
 
-	// To properly add contents from a block, we need to handle the resources that the block is
+	// To properly add contents from a block, we need to handle the Resources that the block is
 	// using and make sure it is accessible in the modified Page.
 	//
-	// Currently supporting: Font, XObject, Colormap, Pattern, Shading, GState resources
+	// Currently supporting: Font, XObject, Colormap, Pattern, Shading, GState Resources
 	// from the block.
 	//
 
@@ -595,7 +595,7 @@ func mergeContents(contents *contentstream.ContentStreamOperations, resources *m
 	return nil
 }
 
-// MergeResources adds all resources from src which are missing from dst.
+// MergeResources adds all Resources from src which are missing from dst.
 // For now, the method only merges colorspaces.
 func MergeResources(src, dst *model.PdfPageResources) error {
 	// Merge colorspaces.

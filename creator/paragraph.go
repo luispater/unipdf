@@ -339,13 +339,13 @@ func drawParagraphOnBlock(blk *Block, p *Paragraph, ctx DrawContext) (DrawContex
 	// Find a free name for the font.
 	num := 1
 	fontName := core.PdfObjectName("Font" + strconv.Itoa(num))
-	for blk.resources.HasFontByName(fontName) {
+	for blk.Resources.HasFontByName(fontName) {
 		num++
 		fontName = core.PdfObjectName("Font" + strconv.Itoa(num))
 	}
 
-	// Add to the Page resources.
-	err := blk.resources.SetFontByName(fontName, p.textFont.ToPdfObject())
+	// Add to the Page Resources.
+	err := blk.Resources.SetFontByName(fontName, p.textFont.ToPdfObject())
 	if err != nil {
 		return ctx, err
 	}

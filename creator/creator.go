@@ -633,7 +633,7 @@ func (c *Creator) Draw(d Drawable) error {
 			if err := pageBlock.MergeBlocks(block); err != nil {
 				return err
 			}
-			if err := MergeResources(block.resources, pageBlock.resources); err != nil {
+			if err := MergeResources(block.Resources, pageBlock.Resources); err != nil {
 				return err
 			}
 		} else {

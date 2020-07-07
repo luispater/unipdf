@@ -317,13 +317,13 @@ func drawImageOnBlock(blk *Block, img *Image, ctx DrawContext) (DrawContext, err
 	// Find a free name for the image.
 	num := 1
 	imgName := core.PdfObjectName(fmt.Sprintf("Img%d", num))
-	for blk.resources.HasXObjectByName(imgName) {
+	for blk.Resources.HasXObjectByName(imgName) {
 		num++
 		imgName = core.PdfObjectName(fmt.Sprintf("Img%d", num))
 	}
 
-	// Add to the Page resources.
-	err := blk.resources.SetXObjectImageByName(imgName, img.xobj)
+	// Add to the Page Resources.
+	err := blk.Resources.SetXObjectImageByName(imgName, img.xobj)
 	if err != nil {
 		return ctx, err
 	}
@@ -331,7 +331,7 @@ func drawImageOnBlock(blk *Block, img *Image, ctx DrawContext) (DrawContext, err
 	// Find an available GS name.
 	i := 0
 	gsName := core.PdfObjectName(fmt.Sprintf("GS%d", i))
-	for blk.resources.HasExtGState(gsName) {
+	for blk.Resources.HasExtGState(gsName) {
 		i++
 		gsName = core.PdfObjectName(fmt.Sprintf("GS%d", i))
 	}
@@ -344,7 +344,7 @@ func drawImageOnBlock(blk *Block, img *Image, ctx DrawContext) (DrawContext, err
 		gs0.Set("ca", core.MakeFloat(img.opacity))
 	}
 
-	err = blk.resources.AddExtGState(gsName, core.MakeIndirectObject(gs0))
+	err = blk.Resources.AddExtGState(gsName, core.MakeIndirectObject(gs0))
 	if err != nil {
 		return ctx, err
 	}
