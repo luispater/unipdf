@@ -30,7 +30,7 @@ type StyledParagraph struct {
 	// Style used for the paragraph link annotations.
 	defaultLinkStyle TextStyle
 
-	// Text alignment: Align left/right/center/justify.
+	// Text alignment: Align Left/Right/center/justify.
 	alignment TextAlignment
 
 	// The line relative height (default 1).
@@ -49,7 +49,7 @@ type StyledParagraph struct {
 	angle float64
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
 	// Positioning: relative / absolute.
 	positioning positioning
@@ -126,7 +126,7 @@ func (p *StyledParagraph) AddExternalLink(text, url string) *TextChunk {
 // AddInternalLink adds a new internal link to the paragraph.
 // The text parameter represents the text that is displayed.
 // The user is taken to the specified page, at the specified x and y
-// coordinates. Position 0, 0 is at the top left of the page.
+// coordinates. Position 0, 0 is at the Top Left of the page.
 // The zoom of the destination page is controlled with the zoom
 // parameter. Pass in 0 to keep the current zoom value.
 func (p *StyledParagraph) AddInternalLink(text string, page int64, x, y, zoom float64) *TextChunk {
@@ -174,17 +174,17 @@ func (p *StyledParagraph) SetAngle(angle float64) {
 	p.angle = angle
 }
 
-// SetMargins sets the Paragraph's margins.
+// SetMargins sets the Paragraph's Margins.
 func (p *StyledParagraph) SetMargins(left, right, top, bottom float64) {
-	p.margins.left = left
-	p.margins.right = right
-	p.margins.top = top
-	p.margins.bottom = bottom
+	p.margins.Left = left
+	p.margins.Right = right
+	p.margins.Top = top
+	p.margins.Bottom = bottom
 }
 
-// GetMargins returns the Paragraph's margins: left, right, top, bottom.
+// GetMargins returns the Paragraph's Margins: Left, Right, Top, Bottom.
 func (p *StyledParagraph) GetMargins() (float64, float64, float64, float64) {
-	return p.margins.left, p.margins.right, p.margins.top, p.margins.bottom
+	return p.margins.Left, p.margins.Right, p.margins.Top, p.margins.Bottom
 }
 
 // SetWidth sets the the Paragraph width. This is essentially the wrapping width,
@@ -516,10 +516,10 @@ func (p *StyledParagraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawCon
 	blk := NewBlock(ctx.PageWidth, ctx.PageHeight)
 	if p.positioning.isRelative() {
 		// Account for Paragraph Margins.
-		ctx.X += p.margins.left
-		ctx.Y += p.margins.top
-		ctx.Width -= p.margins.left + p.margins.right
-		ctx.Height -= p.margins.top + p.margins.bottom
+		ctx.X += p.margins.Left
+		ctx.Y += p.margins.Top
+		ctx.Width -= p.margins.Left + p.margins.Right
+		ctx.Height -= p.margins.Top + p.margins.Bottom
 
 		// Use available space.
 		p.SetWidth(ctx.Width)
@@ -563,15 +563,15 @@ func (p *StyledParagraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawCon
 		blk = NewBlock(ctx.PageWidth, ctx.PageHeight)
 		ctx.Page++
 		newCtx = ctx
-		newCtx.Y = ctx.Margins.top
-		newCtx.X = ctx.Margins.left + p.margins.left
-		newCtx.Height = ctx.PageHeight - ctx.Margins.top - ctx.Margins.bottom - p.margins.bottom
-		newCtx.Width = ctx.PageWidth - ctx.Margins.left - ctx.Margins.right - p.margins.left - p.margins.right
+		newCtx.Y = ctx.Margins.Top
+		newCtx.X = ctx.Margins.Left + p.margins.Left
+		newCtx.Height = ctx.PageHeight - ctx.Margins.Top - ctx.Margins.Bottom - p.margins.Bottom
+		newCtx.Width = ctx.PageWidth - ctx.Margins.Left - ctx.Margins.Right - p.margins.Left - p.margins.Right
 		ctx = newCtx
 	}
 
 	if p.positioning.isRelative() {
-		ctx.X -= p.margins.left // Move back.
+		ctx.X -= p.margins.Left // Move back.
 		ctx.Width = origContext.Width
 		return blocks, ctx, nil
 	}
@@ -828,9 +828,9 @@ func drawStyledParagraphOnBlock(blk *Block, p *StyledParagraph, lines [][]*TextC
 
 						// Reverse the Y axis of the destination coordinates.
 						// The user passes in the annotation coordinates as if
-						// position 0, 0 is at the top left of the page.
-						// However, position 0, 0 in the PDF is at the bottom
-						// left of the page.
+						// position 0, 0 is at the Top Left of the page.
+						// However, position 0, 0 in the PDF is at the Bottom
+						// Left of the page.
 						annotDest, ok := t.Dest.(*core.PdfObjectArray)
 						if ok && annotDest.Len() == 5 {
 							t, ok := annotDest.Get(1).(*core.PdfObjectName)
@@ -888,13 +888,13 @@ func drawStyledParagraphOnBlock(blk *Block, p *StyledParagraph, lines [][]*TextC
 	blk.addContents(ops)
 
 	if relativePos {
-		pHeight := totalHeight + p.margins.bottom
+		pHeight := totalHeight + p.margins.Bottom
 		ctx.Y += pHeight
 		ctx.Height -= pHeight
 
 		// If the division is inline, calculate context new X coordinate.
 		if ctx.Inline {
-			ctx.X += p.Width() + p.margins.right
+			ctx.X += p.Width() + p.margins.Right
 		}
 	}
 

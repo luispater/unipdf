@@ -18,13 +18,13 @@ func (p *PageBreak) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 		NewBlock(ctx.PageWidth, ctx.PageHeight),
 	}
 
-	// New Page. Place context in upper left corner (with margins).
+	// New Page. Place context in upper Left corner (with Margins).
 	ctx.Page++
 	newContext := ctx
-	newContext.Y = ctx.Margins.top
-	newContext.X = ctx.Margins.left
-	newContext.Height = ctx.PageHeight - ctx.Margins.top - ctx.Margins.bottom
-	newContext.Width = ctx.PageWidth - ctx.Margins.left - ctx.Margins.right
+	newContext.Y = ctx.Margins.Top
+	newContext.X = ctx.Margins.Left
+	newContext.Height = ctx.PageHeight - ctx.Margins.Top - ctx.Margins.Bottom
+	newContext.Width = ctx.PageWidth - ctx.Margins.Left - ctx.Margins.Right
 	ctx = newContext
 
 	return blocks, ctx, nil

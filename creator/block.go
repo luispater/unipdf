@@ -40,7 +40,7 @@ type Block struct {
 	angle float64
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
 	// Block annotations.
 	annotations []*model.PdfAnnotation
@@ -216,17 +216,17 @@ func (blk *Block) addContentsByString(contents string) error {
 	return nil
 }
 
-// SetMargins sets the Block's left, right, top, bottom, margins.
+// SetMargins sets the Block's Left, Right, Top, Bottom, Margins.
 func (blk *Block) SetMargins(left, right, top, bottom float64) {
-	blk.margins.left = left
-	blk.margins.right = right
-	blk.margins.top = top
-	blk.margins.bottom = bottom
+	blk.margins.Left = left
+	blk.margins.Right = right
+	blk.margins.Top = top
+	blk.margins.Bottom = bottom
 }
 
-// GetMargins returns the Block's margins: left, right, top, bottom.
+// GetMargins returns the Block's Margins: Left, Right, Top, Bottom.
 func (blk *Block) GetMargins() (float64, float64, float64, float64) {
-	return blk.margins.left, blk.margins.right, blk.margins.top, blk.margins.bottom
+	return blk.margins.Left, blk.margins.Right, blk.margins.Top, blk.margins.Bottom
 }
 
 // SetPos sets the Block's positioning to absolute mode with the specified coordinates.
@@ -330,7 +330,7 @@ func (blk *Block) Draw(d Drawable) error {
 	ctx.Height = blk.height
 	ctx.PageWidth = blk.width
 	ctx.PageHeight = blk.height
-	ctx.X = 0 // Upper left corner of block
+	ctx.X = 0 // Upper Left corner of block
 	ctx.Y = 0
 
 	blocks, _, err := d.GeneratePageBlocks(ctx)

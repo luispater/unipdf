@@ -46,7 +46,7 @@ type Table struct {
 	xPos, yPos float64
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
 	// Specifies whether the table has a header.
 	hasHeader bool
@@ -109,17 +109,17 @@ func (table *Table) Width() float64 {
 	return 0
 }
 
-// SetMargins sets the Table's left, right, top, bottom margins.
+// SetMargins sets the Table's Left, Right, Top, Bottom Margins.
 func (table *Table) SetMargins(left, right, top, bottom float64) {
-	table.margins.left = left
-	table.margins.right = right
-	table.margins.top = top
-	table.margins.bottom = bottom
+	table.margins.Left = left
+	table.margins.Right = right
+	table.margins.Top = top
+	table.margins.Bottom = bottom
 }
 
-// GetMargins returns the left, right, top, bottom Margins.
+// GetMargins returns the Left, Right, Top, Bottom Margins.
 func (table *Table) GetMargins() (float64, float64, float64, float64) {
-	return table.margins.left, table.margins.right, table.margins.top, table.margins.bottom
+	return table.margins.Left, table.margins.Right, table.margins.Top, table.margins.Bottom
 }
 
 // GetRowHeight returns the height of the specified row.
@@ -163,7 +163,7 @@ func (table *Table) CurCol() int {
 	return curCol
 }
 
-// SetPos sets the Table's positioning to absolute mode and specifies the upper-left corner
+// SetPos sets the Table's positioning to absolute mode and specifies the upper-Left corner
 // coordinates as (x,y).
 // Note that this is only sensible to use when the table does not wrap over multiple pages.
 // TODO: Should be able to set width too (not just based on context/relative positioning mode).
@@ -259,19 +259,19 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 		ctx.X = table.xPos
 		ctx.Y = table.yPos
 	} else {
-		// Relative mode: add margins.
-		ctx.X += table.margins.left
-		ctx.Y += table.margins.top
-		ctx.Width -= table.margins.left + table.margins.right
-		ctx.Height -= table.margins.bottom + table.margins.top
+		// Relative mode: add Margins.
+		ctx.X += table.margins.Left
+		ctx.Y += table.margins.Top
+		ctx.Width -= table.margins.Left + table.margins.Right
+		ctx.Height -= table.margins.Bottom + table.margins.Top
 	}
 	tableWidth := ctx.Width
 
-	// Store table's upper left corner.
+	// Store table's upper Left corner.
 	ulX := ctx.X
 	ulY := ctx.Y
 
-	ctx.Height = ctx.PageHeight - ctx.Y - ctx.Margins.bottom
+	ctx.Height = ctx.PageHeight - ctx.Y - ctx.Margins.Bottom
 	origHeight := ctx.Height
 
 	// Start row keeps track of starting row (wraps to 0 on new page).
@@ -288,12 +288,12 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 		for i := 0; i < cell.colspan; i++ {
 			wf += table.colWidths[cell.col+i-1]
 		}
-		// Get x pos relative to table upper left corner.
+		// Get x pos relative to table upper Left corner.
 		xrel := float64(0.0)
 		for i := 0; i < cell.col-1; i++ {
 			xrel += table.colWidths[i] * tableWidth
 		}
-		// Get y pos relative to table upper left corner.
+		// Get y pos relative to table upper Left corner.
 		yrel := float64(0.0)
 		for i := startrow; i < cell.row-1; i++ {
 			yrel += table.rowHeights[i]
@@ -326,8 +326,8 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 				p.SetWidth(w - cell.indent)
 			}
 
-			newh := p.Height() + p.margins.bottom + p.margins.bottom
-			newh += 0.5 * p.fontSize * p.lineHeight // TODO: Make the top margin configurable?
+			newh := p.Height() + p.margins.Bottom + p.margins.Bottom
+			newh += 0.5 * p.fontSize * p.lineHeight // TODO: Make the Top margin configurable?
 			if newh > h {
 				diffh := newh - h
 				// Add diff to last row.
@@ -339,8 +339,8 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 				sp.SetWidth(w - cell.indent)
 			}
 
-			newh := sp.Height() + sp.margins.top + sp.margins.bottom
-			newh += 0.5 * sp.getTextHeight() // TODO: Make the top margin configurable?
+			newh := sp.Height() + sp.margins.Top + sp.margins.Bottom
+			newh += 0.5 * sp.getTextHeight() // TODO: Make the Top margin configurable?
 			if newh > h {
 				diffh := newh - h
 				// Add diff to last row.
@@ -348,7 +348,7 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			}
 		case *Image:
 			img := t
-			newh := img.Height() + img.margins.top + img.margins.bottom
+			newh := img.Height() + img.margins.Top + img.margins.Bottom
 			if newh > h {
 				diffh := newh - h
 				// Add diff to last row.
@@ -356,7 +356,7 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			}
 		case *Table:
 			tbl := t
-			newh := tbl.Height() + tbl.margins.top + tbl.margins.bottom
+			newh := tbl.Height() + tbl.margins.Top + tbl.margins.Bottom
 			if newh > h {
 				diffh := newh - h
 				// Add diff to last row.
@@ -364,7 +364,7 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			}
 		case *List:
 			lst := t
-			newh := lst.tableHeight(w-cell.indent) + lst.margins.top + lst.margins.bottom
+			newh := lst.tableHeight(w-cell.indent) + lst.margins.Top + lst.margins.Bottom
 			if newh > h {
 				diffh := newh - h
 				// Add diff to last row.
@@ -385,7 +385,7 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			}
 
 			if len(divBlocks) > 1 {
-				// Wraps across page, make cell reach all the way to bottom of current page.
+				// Wraps across page, make cell reach all the way to Bottom of current page.
 				newh := c.Height - h
 				if newh > h {
 					diffh := newh - h
@@ -395,7 +395,7 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			}
 
 			// Get available width and height.
-			newh := div.Height() + div.margins.top + div.margins.bottom
+			newh := div.Height() + div.margins.Top + div.margins.Bottom
 			if newh > h {
 				diffh := newh - h
 				// Add diff to last row.
@@ -418,13 +418,13 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			wf += table.colWidths[cell.col+i-1]
 		}
 
-		// Get x pos relative to table upper left corner.
+		// Get x pos relative to table upper Left corner.
 		xrel := float64(0.0)
 		for i := 0; i < cell.col-1; i++ {
 			xrel += table.colWidths[i] * tableWidth
 		}
 
-		// Get y pos relative to table upper left corner.
+		// Get y pos relative to table upper Left corner.
 		yrel := float64(0.0)
 		for i := startrow; i < cell.row-1; i++ {
 			yrel += table.rowHeights[i]
@@ -444,10 +444,10 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			// Go to next page.
 			blocks = append(blocks, block)
 			block = NewBlock(ctx.PageWidth, ctx.PageHeight)
-			ulX = ctx.Margins.left
-			ulY = ctx.Margins.top
+			ulX = ctx.Margins.Left
+			ulY = ctx.Margins.Top
 
-			ctx.Height = ctx.PageHeight - ctx.Margins.top - ctx.Margins.bottom
+			ctx.Height = ctx.PageHeight - ctx.Margins.Top - ctx.Margins.Bottom
 			ctx.Page++
 			origHeight = ctx.Height
 
@@ -467,7 +467,7 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 			}
 		}
 
-		// Height should be how much space there is left of the page.
+		// Height should be how much space there is Left of the page.
 		ctx.Width = w
 		ctx.X = ulX + xrel
 		ctx.Y = ulY + yrel
@@ -536,15 +536,15 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 					ch = ch - lineHeight + lineCapHeight
 				}
 
-				// Account for the top offset the paragraph adds.
+				// Account for the Top offset the paragraph adds.
 				vertOffset = lineCapHeight - lineHeight
 
 				switch cell.verticalAlignment {
 				case CellVerticalAlignmentTop:
-					// Add a bit of space from the top border of the cell.
+					// Add a bit of space from the Top border of the cell.
 					vertOffset += lineCapHeight * 0.5
 				case CellVerticalAlignmentBottom:
-					// Add a bit of space from the bottom border of the cell.
+					// Add a bit of space from the Bottom border of the cell.
 					vertOffset -= lineCapHeight * 0.5
 				}
 			case *Table:
@@ -625,9 +625,9 @@ func (table *Table) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 	ctx.X = origCtx.X
 	// Return original width.
 	ctx.Width = origCtx.Width
-	// Add the bottom margin.
-	ctx.Y += table.margins.bottom
-	ctx.Height -= table.margins.bottom
+	// Add the Bottom margin.
+	ctx.Y += table.margins.Bottom
+	ctx.Height -= table.margins.Bottom
 
 	return blocks, ctx, nil
 }
@@ -649,16 +649,16 @@ const (
 type CellBorderSide int
 
 const (
-	// CellBorderSideLeft adds border on the left side of the table.
+	// CellBorderSideLeft adds border on the Left side of the table.
 	CellBorderSideLeft CellBorderSide = iota
 
-	// CellBorderSideRight adds a border on the right side of the table.
+	// CellBorderSideRight adds a border on the Right side of the table.
 	CellBorderSideRight
 
-	// CellBorderSideTop adds a border on the top side of the table.
+	// CellBorderSideTop adds a border on the Top side of the table.
 	CellBorderSideTop
 
-	// CellBorderSideBottom adds a border on the bottom side of the table.
+	// CellBorderSideBottom adds a border on the Bottom side of the table.
 	CellBorderSideBottom
 
 	// CellBorderSideAll adds borders on all sides of the table.
@@ -668,30 +668,30 @@ const (
 // CellHorizontalAlignment defines the table cell's horizontal alignment.
 type CellHorizontalAlignment int
 
-// Table cells have three horizontal alignment modes: left, center and right.
+// Table cells have three horizontal alignment modes: Left, center and Right.
 const (
-	// CellHorizontalAlignmentLeft aligns cell content on the left (with specified indent); unused space on the right.
+	// CellHorizontalAlignmentLeft aligns cell content on the Left (with specified indent); unused space on the Right.
 	CellHorizontalAlignmentLeft CellHorizontalAlignment = iota
 
-	// CellHorizontalAlignmentCenter aligns cell content in the middle (unused space divided equally on the left/right).
+	// CellHorizontalAlignmentCenter aligns cell content in the middle (unused space divided equally on the Left/Right).
 	CellHorizontalAlignmentCenter
 
-	// CellHorizontalAlignmentRight aligns the cell content on the right; unsued space on the left.
+	// CellHorizontalAlignmentRight aligns the cell content on the Right; unsued space on the Left.
 	CellHorizontalAlignmentRight
 )
 
 // CellVerticalAlignment defines the table cell's vertical alignment.
 type CellVerticalAlignment int
 
-// Table cells have three vertical alignment modes: top, middle and bottom.
+// Table cells have three vertical alignment modes: Top, middle and Bottom.
 const (
-	// CellVerticalAlignmentTop aligns cell content vertically to the top; unused space below.
+	// CellVerticalAlignmentTop aligns cell content vertically to the Top; unused space below.
 	CellVerticalAlignmentTop CellVerticalAlignment = iota
 
 	// CellVerticalAlignmentMiddle aligns cell content in the middle; unused space divided equally above and below.
 	CellVerticalAlignmentMiddle
 
-	// CellVerticalAlignmentBottom aligns cell content on the bottom; unused space above.
+	// CellVerticalAlignmentBottom aligns cell content on the Bottom; unused space above.
 	CellVerticalAlignmentBottom
 )
 
@@ -763,7 +763,7 @@ func (table *Table) newCell(colspan int) *TableCell {
 	cell.col = curCol
 	cell.rowspan = 1
 
-	// Default left indent
+	// Default Left indent
 	cell.indent = 5
 
 	cell.borderStyleLeft = CellBorderStyleNone
@@ -835,7 +835,7 @@ func (table *Table) SkipOver(rows, cols int) {
 	table.curCell += ncells
 }
 
-// SetIndent sets the cell's left indent.
+// SetIndent sets the cell's Left indent.
 func (cell *TableCell) SetIndent(indent float64) {
 	cell.indent = indent
 }

@@ -30,8 +30,8 @@ var (
 type TextAlignment int
 
 // The options supported for text alignment are:
-// left - TextAlignmentLeft
-// right - TextAlignmentRight
+// Left - TextAlignmentLeft
+// Right - TextAlignmentRight
 // center - TextAlignmentCenter
 // justify - TextAlignmentJustify
 const (

@@ -46,9 +46,9 @@ type Image struct {
 	opacity float64
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
-	// Rotional origin.  Default (0,0 - upper left corner of block).
+	// Rotional origin.  Default (0,0 - upper Left corner of block).
 	rotOriginX, rotOriginY float64
 
 	// Encoder
@@ -145,17 +145,17 @@ func (img *Image) SetHorizontalAlignment(alignment HorizontalAlignment) {
 	img.hAlignment = alignment
 }
 
-// SetMargins sets the margins for the Image (in relative mode): left, right, top, bottom.
+// SetMargins sets the Margins for the Image (in relative mode): Left, Right, Top, Bottom.
 func (img *Image) SetMargins(left, right, top, bottom float64) {
-	img.margins.left = left
-	img.margins.right = right
-	img.margins.top = top
-	img.margins.bottom = bottom
+	img.margins.Left = left
+	img.margins.Right = right
+	img.margins.Top = top
+	img.margins.Bottom = bottom
 }
 
-// GetMargins returns the Image's margins: left, right, top, bottom.
+// GetMargins returns the Image's Margins: Left, Right, Top, Bottom.
 func (img *Image) GetMargins() (float64, float64, float64, float64) {
-	return img.margins.left, img.margins.right, img.margins.top, img.margins.bottom
+	return img.margins.Left, img.margins.Right, img.margins.Top, img.margins.Bottom
 }
 
 // ConvertToBinary converts current image data into binary (Bi-level image) format.
@@ -201,7 +201,7 @@ func (img *Image) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 	if img.positioning.isRelative() {
 		if img.height > ctx.Height {
 			// Goes out of the bounds.  Write on a new template instead and create a new context at upper
-			// left corner.
+			// Left corner.
 
 			blocks = append(blocks, blk)
 			blk = NewBlock(ctx.PageWidth, ctx.PageHeight)
@@ -209,16 +209,16 @@ func (img *Image) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 			// New Page.
 			ctx.Page++
 			newContext := ctx
-			newContext.Y = ctx.Margins.top // + p.Margins.top
-			newContext.X = ctx.Margins.left + img.margins.left
-			newContext.Height = ctx.PageHeight - ctx.Margins.top - ctx.Margins.bottom - img.margins.bottom
-			newContext.Width = ctx.PageWidth - ctx.Margins.left - ctx.Margins.right - img.margins.left - img.margins.right
+			newContext.Y = ctx.Margins.Top // + p.Margins.Top
+			newContext.X = ctx.Margins.Left + img.margins.Left
+			newContext.Height = ctx.PageHeight - ctx.Margins.Top - ctx.Margins.Bottom - img.margins.Bottom
+			newContext.Width = ctx.PageWidth - ctx.Margins.Left - ctx.Margins.Right - img.margins.Left - img.margins.Right
 			ctx = newContext
 		} else {
-			ctx.Y += img.margins.top
-			ctx.Height -= img.margins.top + img.margins.bottom
-			ctx.X += img.margins.left
-			ctx.Width -= img.margins.left + img.margins.right
+			ctx.Y += img.margins.Top
+			ctx.Height -= img.margins.Top + img.margins.Bottom
+			ctx.X += img.margins.Left
+			ctx.Width -= img.margins.Left + img.margins.Right
 		}
 	} else {
 		// Absolute.
@@ -239,8 +239,8 @@ func (img *Image) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 		ctx = origCtx
 	} else {
 		// TODO: Use projected height.
-		ctx.Y += img.margins.bottom
-		ctx.Height -= img.margins.bottom
+		ctx.Y += img.margins.Bottom
+		ctx.Height -= img.margins.Bottom
 	}
 
 	return blocks, ctx, nil
@@ -363,7 +363,7 @@ func drawImageOnBlock(blk *Block, img *Image, ctx DrawContext) (DrawContext, err
 		case HorizontalAlignmentCenter:
 			xPos += (ctx.Width - width) / 2
 		case HorizontalAlignmentRight:
-			xPos = ctx.PageWidth - ctx.Margins.right - img.margins.right - width
+			xPos = ctx.PageWidth - ctx.Margins.Right - img.margins.Right - width
 		}
 	}
 	angle := img.angle

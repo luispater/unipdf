@@ -127,7 +127,7 @@ func TestDivInline(t *testing.T) {
 	p.SetFont(fontBold)
 	div.Add(p)
 
-	p = c.NewParagraph("Only if they fit right!")
+	p = c.NewParagraph("Only if they fit Right!")
 	p.SetEnableWrap(false)
 	p.SetFont(fontRegular)
 	div.Add(p)

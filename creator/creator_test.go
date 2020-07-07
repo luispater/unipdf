@@ -267,7 +267,7 @@ func TestShapes1(t *testing.T) {
 		return
 	}
 
-	// Draw a circle around upper right page corner.
+	// Draw a circle around upper Right page corner.
 	ell = creator.NewEllipse(creator.Width(), 0, 100, 100)
 	err = creator.Draw(ell)
 	if err != nil {
@@ -507,7 +507,7 @@ func TestParagraph1(t *testing.T) {
 	testWriteAndRender(t, creator, "2_p1.pdf")
 }
 
-// Test paragraph and page and text wrapping with left, justify, center and right modes.
+// Test paragraph and page and text wrapping with Left, justify, center and Right modes.
 // TODO: In the future we would like the paragraph to split up between pages.  Split up on line,
 // never allowing less than 2 lines to go over (common practice).
 // TODO: In the future we would like to implement Donald Knuth's line wrapping algorithm or
@@ -1112,7 +1112,7 @@ func TestTable(t *testing.T) {
 	p = c.NewParagraph("4,4")
 	cell.SetContent(p)
 
-	// Move down 3 rows, 2 to the left.
+	// Move down 3 rows, 2 to the Left.
 	table.SkipOver(3, -2)
 	cell = table.NewCell()
 	p = c.NewParagraph("7,2")
@@ -1189,7 +1189,7 @@ func TestTableCellWrapping(t *testing.T) {
 	p = c.NewParagraph("4,4")
 	cell.SetContent(p)
 
-	// Move down 3 rows, 2 to the left.
+	// Move down 3 rows, 2 to the Left.
 	table.SkipOver(3, -2)
 	cell = table.NewCell()
 	p = c.NewParagraph("7,2")
@@ -1222,7 +1222,7 @@ func TestBorderedTable1(t *testing.T) {
 	cell1 := table.NewCell()
 	p := c.NewParagraph("A")
 	cell1.SetContent(p)
-	cell1.SetBorder(CellBorderSideAll, CellBorderStyleDouble, 1) // border will be on left
+	cell1.SetBorder(CellBorderSideAll, CellBorderStyleDouble, 1) // border will be on Left
 	cell1.SetBorderLineStyle(draw.LineStyleDashed)
 
 	table.SkipCells(1)
@@ -1241,7 +1241,7 @@ func TestBorderedTable1(t *testing.T) {
 	cell8 := table.NewCell()
 	p = c.NewParagraph("H")
 	cell8.SetContent(p)
-	cell8.SetBorder(CellBorderSideRight, CellBorderStyleSingle, 1) // border will be on right
+	cell8.SetBorder(CellBorderSideRight, CellBorderStyleSingle, 1) // border will be on Right
 	cell8.SetBorderLineStyle(draw.LineStyleSolid)
 
 	c.Draw(table)
@@ -1260,7 +1260,7 @@ func TestBorderedTable2(t *testing.T) {
 	cell1 := table.NewCell()
 	p := c.NewParagraph("A")
 	cell1.SetContent(p)
-	cell1.SetBorder(CellBorderSideLeft, CellBorderStyleSingle, 1) // border will be on left
+	cell1.SetBorder(CellBorderSideLeft, CellBorderStyleSingle, 1) // border will be on Left
 	cell1.SetBorderLineStyle(draw.LineStyleSolid)
 
 	cell2 := table.NewCell()
@@ -1282,7 +1282,7 @@ func TestBorderedTable2(t *testing.T) {
 	cell6 := table.NewCell()
 	p = c.NewParagraph("F")
 	cell6.SetContent(p)
-	cell6.SetBorder(CellBorderSideLeft, CellBorderStyleSingle, 1) // border will be on left
+	cell6.SetBorder(CellBorderSideLeft, CellBorderStyleSingle, 1) // border will be on Left
 	cell6.SetBorderLineStyle(draw.LineStyleSolid)
 
 	table.SkipCells(1) // Skip over 2,3.
@@ -1298,7 +1298,7 @@ func TestBorderedTable2(t *testing.T) {
 	cell8 := table.NewCell()
 	p = c.NewParagraph("H")
 	cell8.SetContent(p)
-	cell8.SetBorder(CellBorderSideRight, CellBorderStyleSingle, 1) // border will be on right
+	cell8.SetBorder(CellBorderSideRight, CellBorderStyleSingle, 1) // border will be on Right
 	cell8.SetBorderLineStyle(draw.LineStyleSolid)
 
 	c.Draw(table)
@@ -1992,7 +1992,7 @@ func addHeadersAndFooters(c *Creator) {
 		if err != nil {
 			fmt.Printf("ERROR : %v\n", err)
 		}
-		img.ScaleToHeight(0.4 * c.pageMargins.top)
+		img.ScaleToHeight(0.4 * c.pageMargins.Top)
 		img.SetPos(20, 10)
 
 		header.Draw(img)
@@ -2140,7 +2140,7 @@ func TestQRCodeOnTemplate(t *testing.T) {
 	}
 
 	// Add another Page where another Page is embedded on the Page.  The other Page is scaled and shifted to fit
-	// on the right of the template.
+	// on the Right of the template.
 	loremTpl, err := NewBlockFromPage(loremPages[0])
 	require.NoError(t, err)
 

@@ -39,7 +39,7 @@ func TestSingleBorder(t *testing.T) {
 	}
 }
 
-// TestSingleBorder2 tests drawing double border with only top and bottom set.
+// TestSingleBorder2 tests drawing double border with only Top and Bottom set.
 func TestSingleBorder2(t *testing.T) {
 	border := newBorder(100, 100, 100, 100)
 	border.SetColorBottom(ColorGreen)
@@ -61,7 +61,7 @@ func TestSingleBorder2(t *testing.T) {
 	}
 }
 
-// TestSingleBorder3 tests drawing double border with only left and bottom borders.
+// TestSingleBorder3 tests drawing double border with only Left and Bottom borders.
 func TestSingleBorder3(t *testing.T) {
 	border := newBorder(100, 100, 100, 100)
 	border.SetColorLeft(ColorRed)
@@ -83,8 +83,8 @@ func TestSingleBorder3(t *testing.T) {
 	}
 }
 
-// TestSingleBorder4 test drawing a combination of double and single borders with single border on top and left,
-// and double on bottom and right.
+// TestSingleBorder4 test drawing a combination of double and single borders with single border on Top and Left,
+// and double on Bottom and Right.
 func TestSingleBorder4(t *testing.T) {
 	border := newBorder(100, 100, 100, 100)
 	border.SetColorBottom(ColorGreen)

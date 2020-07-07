@@ -10,11 +10,11 @@ import (
 	"github.com/unidoc/unipdf/v3/model"
 )
 
-// Rectangle defines a rectangle with upper left corner at (x,y) and a specified width and height.  The rectangle
+// Rectangle defines a rectangle with upper Left corner at (x,y) and a specified width and height.  The rectangle
 // can have a colored fill and/or border with a specified width.
 // Implements the Drawable interface and can be drawn on PDF using the Creator.
 type Rectangle struct {
-	x           float64 // Upper left corner
+	x           float64 // Upper Left corner
 	y           float64
 	width       float64
 	height      float64
@@ -23,7 +23,7 @@ type Rectangle struct {
 	borderWidth float64
 }
 
-// newRectangle creates a new Rectangle with default parameters with left corner at (x,y) and width, height as specified.
+// newRectangle creates a new Rectangle with default parameters with Left corner at (x,y) and width, height as specified.
 func newRectangle(x, y, width, height float64) *Rectangle {
 	rect := &Rectangle{}
 
@@ -38,7 +38,7 @@ func newRectangle(x, y, width, height float64) *Rectangle {
 	return rect
 }
 
-// GetCoords returns coordinates of the Rectangle's upper left corner (x,y).
+// GetCoords returns coordinates of the Rectangle's upper Left corner (x,y).
 func (rect *Rectangle) GetCoords() (float64, float64) {
 	return rect.x, rect.y
 }

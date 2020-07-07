@@ -29,7 +29,7 @@ type Creator struct {
 
 	context DrawContext
 
-	pageMargins margins
+	pageMargins Margins
 
 	pageWidth, pageHeight float64
 
@@ -122,12 +122,12 @@ type FooterFunctionArgs struct {
 	TotalPages int
 }
 
-// Margins.  Can be page margins, or margins around an element.
-type margins struct {
-	left   float64
-	right  float64
-	top    float64
-	bottom float64
+// Margins.  Can be page Margins, or Margins around an element.
+type Margins struct {
+	Left   float64
+	Right  float64
+	Top    float64
+	Bottom float64
 }
 
 // New creates a new instance of the PDF Creator.
@@ -138,10 +138,10 @@ func New() *Creator {
 	c.SetPageSize(PageSizeLetter)
 
 	m := 0.1 * c.pageWidth
-	c.pageMargins.left = m
-	c.pageMargins.right = m
-	c.pageMargins.top = m
-	c.pageMargins.bottom = m
+	c.pageMargins.Left = m
+	c.pageMargins.Right = m
+	c.pageMargins.Top = m
+	c.pageMargins.Bottom = m
 
 	// Initialize default fonts.
 	var err error
@@ -176,13 +176,13 @@ func (c *Creator) GetOptimizer() model.Optimizer {
 	return c.optimizer
 }
 
-// SetPageMargins sets the page margins: left, right, top, bottom.
-// The default page margins are 10% of document width.
+// SetPageMargins sets the page Margins: Left, Right, Top, Bottom.
+// The default page Margins are 10% of document width.
 func (c *Creator) SetPageMargins(left, right, top, bottom float64) {
-	c.pageMargins.left = left
-	c.pageMargins.right = right
-	c.pageMargins.top = top
-	c.pageMargins.bottom = bottom
+	c.pageMargins.Left = left
+	c.pageMargins.Right = right
+	c.pageMargins.Top = top
+	c.pageMargins.Bottom = bottom
 }
 
 // Width returns the current page width.
@@ -248,12 +248,12 @@ func (c *Creator) SetPageSize(size PageSize) {
 	c.pageWidth = size[0]
 	c.pageHeight = size[1]
 
-	// Update default margins to 10% of width.
+	// Update default Margins to 10% of width.
 	m := 0.1 * c.pageWidth
-	c.pageMargins.left = m
-	c.pageMargins.right = m
-	c.pageMargins.top = m
-	c.pageMargins.bottom = m
+	c.pageMargins.Left = m
+	c.pageMargins.Right = m
+	c.pageMargins.Top = m
+	c.pageMargins.Bottom = m
 }
 
 // DrawHeader sets a function to draw a header on created output pages.
@@ -294,13 +294,13 @@ func (c *Creator) newPage() *model.PdfPage {
 	return page
 }
 
-// Initialize the drawing context, moving to upper left corner.
+// Initialize the drawing context, moving to upper Left corner.
 func (c *Creator) initContext() {
-	// Update context, move to upper left corner.
-	c.context.X = c.pageMargins.left
-	c.context.Y = c.pageMargins.top
-	c.context.Width = c.pageWidth - c.pageMargins.right - c.pageMargins.left
-	c.context.Height = c.pageHeight - c.pageMargins.bottom - c.pageMargins.top
+	// Update context, move to upper Left corner.
+	c.context.X = c.pageMargins.Left
+	c.context.Y = c.pageMargins.Top
+	c.context.Width = c.pageWidth - c.pageMargins.Right - c.pageMargins.Left
+	c.context.Height = c.pageHeight - c.pageMargins.Bottom - c.pageMargins.Top
 	c.context.PageHeight = c.pageHeight
 	c.context.PageWidth = c.pageWidth
 	c.context.Margins = c.pageMargins
@@ -322,8 +322,8 @@ func (c *Creator) AddPage(page *model.PdfPage) error {
 		return err
 	}
 
-	c.context.X = mbox.Llx + c.pageMargins.left
-	c.context.Y = c.pageMargins.top
+	c.context.X = mbox.Llx + c.pageMargins.Left
+	c.context.Y = c.pageMargins.Top
 	c.context.PageHeight = mbox.Ury - mbox.Lly
 	c.context.PageWidth = mbox.Urx - mbox.Llx
 
@@ -494,9 +494,9 @@ func (c *Creator) Finalize() error {
 
 			// Reverse the Y axis of the destination coordinates.
 			// The user passes in the annotation coordinates as if
-			// position 0, 0 is at the top left of the page.
-			// However, position 0, 0 in the PDF is at the bottom
-			// left of the page.
+			// position 0, 0 is at the Top Left of the page.
+			// However, position 0, 0 in the PDF is at the Bottom
+			// Left of the page.
 			item.Dest.Y = c.pageHeight - item.Dest.Y
 
 			outlineItems := item.Items()
@@ -534,9 +534,9 @@ func (c *Creator) Finalize() error {
 		// Draw page header.
 		if c.drawHeaderFunc != nil {
 			// Prepare a block to draw on.
-			// Header is drawn on the top of the page. Has width of the page, but height limited to
-			// the page margin top height.
-			headerBlock := NewBlock(c.pageWidth, c.pageMargins.top)
+			// Header is drawn on the Top of the page. Has width of the page, but height limited to
+			// the page margin Top height.
+			headerBlock := NewBlock(c.pageWidth, c.pageMargins.Top)
 			args := HeaderFunctionArgs{
 				PageNum:    idx + 1,
 				TotalPages: totPages,
@@ -553,9 +553,9 @@ func (c *Creator) Finalize() error {
 		// Draw page footer.
 		if c.drawFooterFunc != nil {
 			// Prepare a block to draw on.
-			// Footer is drawn on the bottom of the page. Has width of the page, but height limited
-			// to the page margin bottom height.
-			footerBlock := NewBlock(c.pageWidth, c.pageMargins.bottom)
+			// Footer is drawn on the Bottom of the page. Has width of the page, but height limited
+			// to the page margin Bottom height.
+			footerBlock := NewBlock(c.pageWidth, c.pageMargins.Bottom)
 			args := FooterFunctionArgs{
 				PageNum:    idx + 1,
 				TotalPages: totPages,
@@ -600,7 +600,7 @@ func (c *Creator) MoveY(y float64) {
 	c.context.Y = y
 }
 
-// MoveRight moves the drawing context right by relative displacement dx (negative goes left).
+// MoveRight moves the drawing context Right by relative displacement dx (negative goes Left).
 func (c *Creator) MoveRight(dx float64) {
 	c.context.X += dx
 }
@@ -648,7 +648,7 @@ func (c *Creator) Draw(d Drawable) error {
 	// Inner elements can affect X, Y position and available height.
 	c.context.X = ctx.X
 	c.context.Y = ctx.Y
-	c.context.Height = ctx.PageHeight - ctx.Y - ctx.Margins.bottom
+	c.context.Height = ctx.PageHeight - ctx.Y - ctx.Margins.Bottom
 
 	return nil
 }
@@ -844,7 +844,7 @@ func (c *Creator) NewList() *List {
 }
 
 // NewRectangle creates a new Rectangle with default parameters
-// with left corner at (x,y) and width, height as specified.
+// with Left corner at (x,y) and width, height as specified.
 func (c *Creator) NewRectangle(x, y, width, height float64) *Rectangle {
 	return newRectangle(x, y, width, height)
 }

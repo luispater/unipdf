@@ -39,7 +39,7 @@ func loadPagesFromFile(f *os.File) ([]*model.PdfPage, error) {
 }
 
 // Rotates rectangle (0,0,w,h) by the specified angle and returns the its
-// bounding box. The origin of rotation is the top left corner of the rectangle.
+// bounding box. The origin of rotation is the Top Left corner of the rectangle.
 func rotateRect(w, h, angle float64) (x, y, rotatedWidth, rotatedHeight float64) {
 	if angle == 0 {
 		return 0, 0, w, h

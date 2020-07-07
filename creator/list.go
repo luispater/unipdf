@@ -28,12 +28,12 @@ type List struct {
 	items []*listItem
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
 	// The marker symbol of the list items.
 	marker TextChunk
 
-	// The left offset of the list when nested into another list.
+	// The Left offset of the list when nested into another list.
 	indent float64
 
 	// Specifies if the user has changed the default indent value of the list.
@@ -107,28 +107,28 @@ func (l *List) Marker() *TextChunk {
 	return &l.marker
 }
 
-// Indent returns the left offset of the list when nested into another list.
+// Indent returns the Left offset of the list when nested into another list.
 func (l *List) Indent() float64 {
 	return l.indent
 }
 
-// SetIndent sets the left offset of the list when nested into another list.
+// SetIndent sets the Left offset of the list when nested into another list.
 func (l *List) SetIndent(indent float64) {
 	l.indent = indent
 	l.defaultIndent = false
 }
 
-// Margins returns the margins of the list: left, right, top, bottom.
+// Margins returns the Margins of the list: Left, Right, Top, Bottom.
 func (l *List) Margins() (float64, float64, float64, float64) {
-	return l.margins.left, l.margins.right, l.margins.top, l.margins.bottom
+	return l.margins.Left, l.margins.Right, l.margins.Top, l.margins.Bottom
 }
 
-// SetMargins sets the margins of the paragraph.
+// SetMargins sets the Margins of the paragraph.
 func (l *List) SetMargins(left, right, top, bottom float64) {
-	l.margins.left = left
-	l.margins.right = right
-	l.margins.top = top
-	l.margins.bottom = bottom
+	l.margins.Left = left
+	l.margins.Right = right
+	l.margins.Top = top
+	l.margins.Bottom = bottom
 }
 
 // Width is not used. The list component is designed to fill into the available
@@ -158,7 +158,7 @@ func (l *List) tableHeight(width float64) float64 {
 				p.SetWidth(width)
 			}
 
-			height += p.Height() + p.margins.bottom + p.margins.bottom
+			height += p.Height() + p.margins.Bottom + p.margins.Bottom
 			height += 0.5 * p.fontSize * p.lineHeight
 		case *StyledParagraph:
 			sp := t
@@ -166,7 +166,7 @@ func (l *List) tableHeight(width float64) float64 {
 				sp.SetWidth(width)
 			}
 
-			height += sp.Height() + sp.margins.top + sp.margins.bottom
+			height += sp.Height() + sp.margins.Top + sp.margins.Bottom
 			height += 0.5 * sp.getTextHeight()
 		default:
 			height += item.drawable.Height()

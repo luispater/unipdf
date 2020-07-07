@@ -36,8 +36,8 @@ type TOC struct {
 	// The amount of space an indentation level occupies in a TOC line.
 	lineLevelOffset float64
 
-	// The margins of new TOC lines.
-	lineMargins margins
+	// The Margins of new TOC lines.
+	lineMargins Margins
 
 	// Positioning: relative/absolute.
 	positioning positioning
@@ -71,7 +71,7 @@ func newTOC(title string, style, styleHeading TextStyle) *TOC {
 		linePageStyle:      style,
 		lineSeparator:      ".",
 		lineLevelOffset:    10,
-		lineMargins:        margins{0, 0, 2, 2},
+		lineMargins:        Margins{0, 0, 2, 2},
 		positioning:        positionRelative,
 		defaultStyle:       style,
 		showLinks:          true,
@@ -120,9 +120,9 @@ func (t *TOC) Add(number, title, page string, level uint) *TOCLine {
 		return nil
 	}
 
-	// Set line margins.
+	// Set line Margins.
 	m := &t.lineMargins
-	tl.SetMargins(m.left, m.right, m.top, m.bottom)
+	tl.SetMargins(m.Left, m.Right, m.Top, m.Bottom)
 
 	// Set line level offset.
 	tl.SetLevelOffset(t.lineLevelOffset)
@@ -149,14 +149,14 @@ func (t *TOC) SetLineSeparator(separator string) {
 	t.lineSeparator = separator
 }
 
-// SetLineMargins sets the margins for all new lines of the table of contents.
+// SetLineMargins sets the Margins for all new lines of the table of contents.
 func (t *TOC) SetLineMargins(left, right, top, bottom float64) {
 	m := &t.lineMargins
 
-	m.left = left
-	m.right = right
-	m.top = top
-	m.bottom = bottom
+	m.Left = left
+	m.Right = right
+	m.Top = top
+	m.Bottom = bottom
 }
 
 // SetLineStyle sets the style for all the line components: number, title,

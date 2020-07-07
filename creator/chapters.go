@@ -45,7 +45,7 @@ type Chapter struct {
 	xPos, yPos float64
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
 	// Reference to the parent chapter the current chapter belongs to.
 	parent *Chapter
@@ -118,18 +118,18 @@ func (chap *Chapter) GetHeading() *Paragraph {
 	return chap.heading
 }
 
-// SetMargins sets the Chapter margins: left, right, top, bottom.
-// Typically not needed as the creator's page margins are used.
+// SetMargins sets the Chapter Margins: Left, Right, Top, Bottom.
+// Typically not needed as the creator's page Margins are used.
 func (chap *Chapter) SetMargins(left, right, top, bottom float64) {
-	chap.margins.left = left
-	chap.margins.right = right
-	chap.margins.top = top
-	chap.margins.bottom = bottom
+	chap.margins.Left = left
+	chap.margins.Right = right
+	chap.margins.Top = top
+	chap.margins.Bottom = bottom
 }
 
-// GetMargins returns the Chapter's margin: left, right, top, bottom.
+// GetMargins returns the Chapter's margin: Left, Right, Top, Bottom.
 func (chap *Chapter) GetMargins() (float64, float64, float64, float64) {
-	return chap.margins.left, chap.margins.right, chap.margins.top, chap.margins.bottom
+	return chap.margins.Left, chap.margins.Right, chap.margins.Top, chap.margins.Bottom
 }
 
 // Add adds a new Drawable to the chapter.
@@ -187,10 +187,10 @@ func (chap *Chapter) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 
 	if chap.positioning.isRelative() {
 		// Update context.
-		ctx.X += chap.margins.left
-		ctx.Y += chap.margins.top
-		ctx.Width -= chap.margins.left + chap.margins.right
-		ctx.Height -= chap.margins.top
+		ctx.X += chap.margins.Left
+		ctx.Y += chap.margins.Top
+		ctx.Width -= chap.margins.Left + chap.margins.Right
+		ctx.Height -= chap.margins.Top
 	}
 
 	blocks, c, err := chap.heading.GeneratePageBlocks(ctx)

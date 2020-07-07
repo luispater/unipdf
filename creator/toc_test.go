@@ -19,7 +19,7 @@ func TestTOCAdvanced(t *testing.T) {
 
 	toc := c.NewTOC("Table of Contents")
 
-	// Set separator and margins for all the lines.
+	// Set separator and Margins for all the lines.
 	toc.SetLineSeparator(".")
 	toc.SetLineMargins(0, 0, 2, 2)
 	toc.SetLineLevelOffset(12)

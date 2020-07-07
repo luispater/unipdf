@@ -144,8 +144,8 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	// Test table cell alignment.
 	style = c.NewTextStyle()
 
-	// Test left alignment with paragraph wrapping enabled.
-	p = c.NewParagraph("Wrap enabled. This text should be left aligned.")
+	// Test Left alignment with paragraph wrapping enabled.
+	p = c.NewParagraph("Wrap enabled. This text should be Left aligned.")
 	p.SetEnableWrap(true)
 
 	cell = table.NewCell()
@@ -156,7 +156,7 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	s = c.NewStyledParagraph()
 	s.SetEnableWrap(true)
 
-	chunk = s.Append("Wrap enabled. This text should be left aligned.")
+	chunk = s.Append("Wrap enabled. This text should be Left aligned.")
 	chunk.Style = style
 
 	cell = table.NewCell()
@@ -164,8 +164,8 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	cell.SetHorizontalAlignment(CellHorizontalAlignmentLeft)
 	cell.SetContent(s)
 
-	// Test left alignment with paragraph wrapping disabled.
-	p = c.NewParagraph("Wrap disabled. This text should be left aligned.")
+	// Test Left alignment with paragraph wrapping disabled.
+	p = c.NewParagraph("Wrap disabled. This text should be Left aligned.")
 	p.SetEnableWrap(false)
 
 	cell = table.NewCell()
@@ -176,7 +176,7 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	s = c.NewStyledParagraph()
 	s.SetEnableWrap(false)
 
-	chunk = s.Append("Wrap disabled. This text should be left aligned.")
+	chunk = s.Append("Wrap disabled. This text should be Left aligned.")
 	chunk.Style = style
 
 	cell = table.NewCell()
@@ -224,8 +224,8 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	cell.SetHorizontalAlignment(CellHorizontalAlignmentCenter)
 	cell.SetContent(s)
 
-	// Test right alignment with paragraph wrapping enabled.
-	p = c.NewParagraph("Wrap enabled. This text should be right aligned.")
+	// Test Right alignment with paragraph wrapping enabled.
+	p = c.NewParagraph("Wrap enabled. This text should be Right aligned.")
 	p.SetEnableWrap(true)
 
 	cell = table.NewCell()
@@ -236,7 +236,7 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	s = c.NewStyledParagraph()
 	s.SetEnableWrap(true)
 
-	chunk = s.Append("Wrap enabled. This text should be right aligned.")
+	chunk = s.Append("Wrap enabled. This text should be Right aligned.")
 	chunk.Style = style
 
 	cell = table.NewCell()
@@ -244,8 +244,8 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	cell.SetHorizontalAlignment(CellHorizontalAlignmentRight)
 	cell.SetContent(s)
 
-	// Test right alignment with paragraph wrapping disabled.
-	p = c.NewParagraph("Wrap disabled. This text should be right aligned.")
+	// Test Right alignment with paragraph wrapping disabled.
+	p = c.NewParagraph("Wrap disabled. This text should be Right aligned.")
 	p.SetEnableWrap(false)
 
 	cell = table.NewCell()
@@ -256,7 +256,7 @@ func TestParagraphRegularVsStyled(t *testing.T) {
 	s = c.NewStyledParagraph()
 	s.SetEnableWrap(false)
 
-	chunk = s.Append("Wrap disabled. This text should be right aligned.")
+	chunk = s.Append("Wrap disabled. This text should be Right aligned.")
 	chunk.Style = style
 
 	cell = table.NewCell()
@@ -519,7 +519,7 @@ func TestStyledParagraphCharacterSpacing(t *testing.T) {
 
 	// Draw section title.
 	s := c.NewStyledParagraph()
-	chunk := s.Append("Text align: left (regular vs character spacing)")
+	chunk := s.Append("Text align: Left (regular vs character spacing)")
 	chunk.Style.Font = fontBold
 
 	err := c.Draw(s)
@@ -527,7 +527,7 @@ func TestStyledParagraphCharacterSpacing(t *testing.T) {
 		t.Fatalf("Error drawing: %v", err)
 	}
 
-	// Text align left - regular.
+	// Text align Left - regular.
 	p := c.NewStyledParagraph()
 	p.SetMargins(0, 0, 20, 0)
 	p.SetTextAlignment(TextAlignmentLeft)
@@ -540,7 +540,7 @@ func TestStyledParagraphCharacterSpacing(t *testing.T) {
 		t.Fatalf("Error drawing: %v", err)
 	}
 
-	// Text align left - character spacing.
+	// Text align Left - character spacing.
 	p = c.NewStyledParagraph()
 	p.SetMargins(0, 0, 20, 50)
 	p.SetTextAlignment(TextAlignmentLeft)
@@ -595,7 +595,7 @@ func TestStyledParagraphCharacterSpacing(t *testing.T) {
 
 	// Draw section title.
 	s = c.NewStyledParagraph()
-	chunk = s.Append("Text align: right (regular vs character spacing)")
+	chunk = s.Append("Text align: Right (regular vs character spacing)")
 	chunk.Style.Font = fontBold
 
 	err = c.Draw(s)
@@ -603,7 +603,7 @@ func TestStyledParagraphCharacterSpacing(t *testing.T) {
 		t.Fatalf("Error drawing: %v", err)
 	}
 
-	// Text alignment right - regular.
+	// Text alignment Right - regular.
 	p = c.NewStyledParagraph()
 	p.SetMargins(0, 0, 20, 0)
 	p.SetTextAlignment(TextAlignmentRight)
@@ -616,7 +616,7 @@ func TestStyledParagraphCharacterSpacing(t *testing.T) {
 		t.Fatalf("Error drawing: %v", err)
 	}
 
-	// Text alignment right - character spacing.
+	// Text alignment Right - character spacing.
 	p = c.NewStyledParagraph()
 	p.SetMargins(0, 0, 20, 50)
 	p.SetTextAlignment(TextAlignmentRight)

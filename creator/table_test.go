@@ -101,10 +101,10 @@ func TestTableWithImage(t *testing.T) {
 		return
 	}
 
-	img.margins.top = 2.0
-	img.margins.bottom = 2.0
-	img.margins.left = 2.0
-	img.margins.bottom = 2.0
+	img.margins.Top = 2.0
+	img.margins.Bottom = 2.0
+	img.margins.Left = 2.0
+	img.margins.Bottom = 2.0
 	img.ScaleToWidth(0.3 * c.Width())
 	fmt.Printf("Scaling image to width: %v\n", 0.5*c.Width())
 
@@ -211,10 +211,10 @@ func TestTableWithDiv(t *testing.T) {
 		return
 	}
 
-	img.margins.top = 2.0
-	img.margins.bottom = 2.0
-	img.margins.left = 2.0
-	img.margins.bottom = 2.0
+	img.margins.Top = 2.0
+	img.margins.Bottom = 2.0
+	img.margins.Left = 2.0
+	img.margins.Bottom = 2.0
 	img.ScaleToWidth(0.2 * c.Width())
 	fmt.Printf("Scaling image to width: %v\n", 0.5*c.Width())
 
@@ -600,9 +600,9 @@ func TestTableHorizontalCellAlign(t *testing.T) {
 	}
 
 	// Draw table header.
-	drawCell("Align left", fontBold, CellHorizontalAlignmentLeft)
+	drawCell("Align Left", fontBold, CellHorizontalAlignmentLeft)
 	drawCell("Align center", fontBold, CellHorizontalAlignmentCenter)
-	drawCell("Align right", fontBold, CellHorizontalAlignmentRight)
+	drawCell("Align Right", fontBold, CellHorizontalAlignmentRight)
 
 	// Draw table content.
 	for i := 100; i < 200; i++ {

@@ -33,7 +33,7 @@ type TOCLine struct {
 	// Holds the text and style of the page part of the TOC line.
 	Page TextChunk
 
-	// The left margin of the TOC line.
+	// The Left margin of the TOC line.
 	offset float64
 
 	// The indentation level of the TOC line.
@@ -93,7 +93,7 @@ func newStyledTOCLine(number, title, page TextChunk, level uint, style TextStyle
 		positioning: positionRelative,
 	}
 
-	sp.margins.left = tl.offset + float64(tl.level-1)*tl.levelOffset
+	sp.margins.Left = tl.offset + float64(tl.level-1)*tl.levelOffset
 	sp.beforeRender = tl.prepareParagraph
 	return tl
 }
@@ -115,7 +115,7 @@ func (tl *TOCLine) Level() uint {
 // SetLevel sets the indentation level of the TOC line.
 func (tl *TOCLine) SetLevel(level uint) {
 	tl.level = level
-	tl.sp.margins.left = tl.offset + float64(tl.level-1)*tl.levelOffset
+	tl.sp.margins.Left = tl.offset + float64(tl.level-1)*tl.levelOffset
 }
 
 // LevelOffset returns the amount of space an indentation level occupies.
@@ -126,30 +126,30 @@ func (tl *TOCLine) LevelOffset() float64 {
 // SetLevelOffset sets the amount of space an indentation level occupies.
 func (tl *TOCLine) SetLevelOffset(levelOffset float64) {
 	tl.levelOffset = levelOffset
-	tl.sp.margins.left = tl.offset + float64(tl.level-1)*tl.levelOffset
+	tl.sp.margins.Left = tl.offset + float64(tl.level-1)*tl.levelOffset
 }
 
-// GetMargins returns the margins of the TOC line: left, right, top, bottom.
+// GetMargins returns the Margins of the TOC line: Left, Right, Top, Bottom.
 func (tl *TOCLine) GetMargins() (float64, float64, float64, float64) {
 	m := &tl.sp.margins
-	return tl.offset, m.right, m.top, m.bottom
+	return tl.offset, m.Right, m.Top, m.Bottom
 }
 
-// SetMargins sets the margins TOC line.
+// SetMargins sets the Margins TOC line.
 func (tl *TOCLine) SetMargins(left, right, top, bottom float64) {
 	tl.offset = left
 
 	m := &tl.sp.margins
-	m.left = tl.offset + float64(tl.level-1)*tl.levelOffset
-	m.right = right
-	m.top = top
-	m.bottom = bottom
+	m.Left = tl.offset + float64(tl.level-1)*tl.levelOffset
+	m.Right = right
+	m.Top = top
+	m.Bottom = bottom
 }
 
 // SetLink makes the line an internal link.
 // The text parameter represents the text that is displayed.
 // The user is taken to the specified page, at the specified x and y
-// coordinates. Position 0, 0 is at the top left of the page.
+// coordinates. Position 0, 0 is at the Top Left of the page.
 func (tl *TOCLine) SetLink(page int64, x, y float64) {
 	tl.linkX = x
 	tl.linkY = y

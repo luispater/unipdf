@@ -14,7 +14,7 @@ import (
 // Division is a container component which can wrap across multiple pages (unlike Block).
 // It can contain multiple Drawable components (currently supporting Paragraph and Image).
 //
-// The component stacking behavior is vertical, where the Drawables are drawn on top of each other.
+// The component stacking behavior is vertical, where the Drawables are drawn on Top of each other.
 // Also supports horizontal stacking by activating the inline mode.
 type Division struct {
 	components []VectorDrawable
@@ -23,7 +23,7 @@ type Division struct {
 	positioning positioning
 
 	// Margins to be applied around the block when drawing on Page.
-	margins margins
+	margins Margins
 
 	// Controls whether the components are stacked horizontally
 	inline bool
@@ -69,7 +69,7 @@ func (div *Division) Add(d VectorDrawable) error {
 	return nil
 }
 
-// Height returns the height for the Division component assuming all stacked on top of each other.
+// Height returns the height for the Division component assuming all stacked on Top of each other.
 func (div *Division) Height() float64 {
 	y := 0.0
 	yMax := 0.0
@@ -78,12 +78,12 @@ func (div *Division) Height() float64 {
 		switch t := component.(type) {
 		case *Paragraph:
 			p := t
-			compWidth += p.margins.left + p.margins.right
-			compHeight += p.margins.top + p.margins.bottom
+			compWidth += p.margins.Left + p.margins.Right
+			compHeight += p.margins.Top + p.margins.Bottom
 		case *StyledParagraph:
 			p := t
-			compWidth += p.margins.left + p.margins.right
-			compHeight += p.margins.top + p.margins.bottom
+			compWidth += p.margins.Left + p.margins.Right
+			compHeight += p.margins.Top + p.margins.Bottom
 		}
 
 		// Vertical stacking.
@@ -109,10 +109,10 @@ func (div *Division) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 
 	if div.positioning.isRelative() {
 		// Update context.
-		ctx.X += div.margins.left
-		ctx.Y += div.margins.top
-		ctx.Width -= div.margins.left + div.margins.right
-		ctx.Height -= div.margins.top + div.margins.bottom
+		ctx.X += div.margins.Left
+		ctx.Y += div.margins.Top
+		ctx.Width -= div.margins.Left + div.margins.Right
+		ctx.Height -= div.margins.Top + div.margins.Bottom
 	}
 
 	// Set the inline mode of the division to the context.
@@ -158,12 +158,12 @@ func (div *Division) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 			pageblocks = append(pageblocks, newblocks[0:]...)
 		}
 
-		// Apply padding/margins.
+		// Apply padding/Margins.
 		if ctx.Inline {
 			// Recalculate positions on page change.
 			if ctx.Page != updCtx.Page {
-				divCtx.Y = ctx.Margins.top
-				divCtx.Height = ctx.PageHeight - ctx.Margins.top
+				divCtx.Y = ctx.Margins.Top
+				divCtx.Height = ctx.PageHeight - ctx.Margins.Top
 
 				tmpCtx.Y = divCtx.Y
 				tmpCtx.Height = divCtx.Height
