@@ -210,11 +210,11 @@ func (c *Creator) SetTOC(toc *TOC) {
 	c.toc = toc
 }
 
-func (c *Creator) setActivePage(p *model.PdfPage) {
+func (c *Creator) SetActivePage(p *model.PdfPage) {
 	c.activePage = p
 }
 
-func (c *Creator) getActivePage() *model.PdfPage {
+func (c *Creator) GetActivePage() *model.PdfPage {
 	if c.activePage == nil {
 		if len(c.pages) == 0 {
 			return nil
@@ -336,7 +336,7 @@ func (c *Creator) AddPage(page *model.PdfPage) error {
 // RotateDeg rotates the current active page by angle degrees.  An error is returned on failure,
 // which can be if there is no currently active page, or the angleDeg is not a multiple of 90 degrees.
 func (c *Creator) RotateDeg(angleDeg int64) error {
-	page := c.getActivePage()
+	page := c.GetActivePage()
 	if page == nil {
 		common.Log.Debug("Fail to rotate: no page currently active")
 		return errors.New("no page active")
@@ -425,7 +425,7 @@ func (c *Creator) Finalize() error {
 		p := c.newPage()
 		// Place at front.
 		c.pages = append([]*model.PdfPage{p}, c.pages...)
-		c.setActivePage(p)
+		c.SetActivePage(p)
 
 		args := FrontpageFunctionArgs{
 			PageNum:    1,
@@ -461,7 +461,7 @@ func (c *Creator) Finalize() error {
 			p := c.newPage()
 			// Place at front.
 			tocpages = append(tocpages, p)
-			c.setActivePage(p)
+			c.SetActivePage(p)
 			c.Draw(block)
 		}
 
@@ -525,7 +525,7 @@ func (c *Creator) Finalize() error {
 	}
 
 	for idx, page := range c.pages {
-		c.setActivePage(page)
+		c.SetActivePage(page)
 
 		// Draw page header.
 		if c.drawHeaderFunc != nil {
@@ -613,7 +613,7 @@ func (c *Creator) MoveDown(dy float64) {
 // rendered to. In order to render the generated blocks to the creator pages,
 // call Finalize, Write or WriteToFile.
 func (c *Creator) Draw(d Drawable) error {
-	if c.getActivePage() == nil {
+	if c.GetActivePage() == nil {
 		// Add a new Page if none added already.
 		c.NewPage()
 	}
@@ -628,7 +628,7 @@ func (c *Creator) Draw(d Drawable) error {
 			c.NewPage()
 		}
 
-		page := c.getActivePage()
+		page := c.GetActivePage()
 		if pageBlock, ok := c.PageBlocks[page]; ok {
 			if err := pageBlock.MergeBlocks(block); err != nil {
 				return err

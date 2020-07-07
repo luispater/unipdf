@@ -2498,7 +2498,7 @@ func TestCombineDuplicateDirectObjects(t *testing.T) {
 			metadata := core.MakeDict()
 			metadata.Set(core.PdfObjectName("TEST"), core.MakeString("---------------- ## ----------------"))
 			c.Draw(ch2)
-			c.getActivePage().Metadata = metadata
+			c.GetActivePage().Metadata = metadata
 		}
 
 		// Set a function to create the front Page.
