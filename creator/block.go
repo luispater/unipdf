@@ -351,7 +351,7 @@ func (blk *Block) Draw(d Drawable) error {
 	return nil
 }
 
-// DrawWithContext draws the Block using the specified drawing context.
+// DrawWithContext draws the Block using the specified drawing DrawContext.
 func (blk *Block) DrawWithContext(d Drawable, ctx DrawContext) error {
 	blocks, _, err := d.GeneratePageBlocks(ctx)
 	if err != nil {

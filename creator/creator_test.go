@@ -333,7 +333,7 @@ func TestShapesOnBlock(t *testing.T) {
 	testWriteAndRender(t, creator, "1_shapes_on_block.pdf")
 }
 
-// Test image wrapping between pages when using relative context mode.
+// Test image wrapping between pages when using relative DrawContext mode.
 func TestImageWrapping(t *testing.T) {
 	creator := New()
 
@@ -399,7 +399,7 @@ func TestImageRotation(t *testing.T) {
 }
 
 // Test image, rotation and page wrapping.  Disadvantage here is that content is overlapping.  May be reconsidered
-// in the future.  And actually reconsider overall how images are used in the relative context mode.
+// in the future.  And actually reconsider overall how images are used in the relative DrawContext mode.
 func TestImageRotationAndWrap(t *testing.T) {
 	creator := New()
 

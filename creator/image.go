@@ -200,7 +200,7 @@ func (img *Image) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 	blk := NewBlock(ctx.PageWidth, ctx.PageHeight)
 	if img.positioning.isRelative() {
 		if img.height > ctx.Height {
-			// Goes out of the bounds.  Write on a new template instead and create a new context at upper
+			// Goes out of the bounds.  Write on a new template instead and create a new DrawContext at upper
 			// Left corner.
 
 			blocks = append(blocks, blk)
@@ -235,7 +235,7 @@ func (img *Image) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 	blocks = append(blocks, blk)
 
 	if img.positioning.isAbsolute() {
-		// Absolute drawing should not affect context.
+		// Absolute drawing should not affect DrawContext.
 		ctx = origCtx
 	} else {
 		// TODO: Use projected height.
@@ -396,6 +396,6 @@ func drawImageOnBlock(blk *Block, img *Image, ctx DrawContext) (DrawContext, err
 		return ctx, nil
 	}
 
-	// Absolute positioning - return original context.
+	// Absolute positioning - return original DrawContext.
 	return origCtx, nil
 }

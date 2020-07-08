@@ -104,7 +104,7 @@ func (table *Table) Height() float64 {
 }
 
 // Width is not used. Not used as a Table element is designed to fill into
-// available width depending on the context. Returns 0.
+// available width depending on the DrawContext. Returns 0.
 func (table *Table) Width() float64 {
 	return 0
 }
@@ -166,7 +166,7 @@ func (table *Table) CurCol() int {
 // SetPos sets the Table's positioning to absolute mode and specifies the upper-Left corner
 // coordinates as (x,y).
 // Note that this is only sensible to use when the table does not wrap over multiple pages.
-// TODO: Should be able to set width too (not just based on context/relative positioning mode).
+// TODO: Should be able to set width too (not just based on DrawContext/relative positioning mode).
 func (table *Table) SetPos(x, y float64) {
 	table.positioning = positionAbsolute
 	table.xPos = x
@@ -911,7 +911,7 @@ func (cell *TableCell) SetBackgroundColor(col Color) {
 	cell.backgroundColor = model.NewPdfColorDeviceRGB(col.ToRGB())
 }
 
-// Width returns the cell's width based on the input draw context.
+// Width returns the cell's width based on the input draw DrawContext.
 func (cell *TableCell) Width(ctx DrawContext) float64 {
 	fraction := float64(0.0)
 	for j := 0; j < cell.colspan; j++ {

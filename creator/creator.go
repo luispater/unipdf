@@ -27,7 +27,7 @@ type Creator struct {
 
 	pagesize PageSize
 
-	context DrawContext
+	DrawContext DrawContext
 
 	pageMargins Margins
 
@@ -294,23 +294,23 @@ func (c *Creator) newPage() *model.PdfPage {
 	return page
 }
 
-// Initialize the drawing context, moving to upper Left corner.
+// Initialize the drawing DrawContext, moving to upper Left corner.
 func (c *Creator) initContext() {
-	// Update context, move to upper Left corner.
-	c.context.X = c.pageMargins.Left
-	c.context.Y = c.pageMargins.Top
-	c.context.Width = c.pageWidth - c.pageMargins.Right - c.pageMargins.Left
-	c.context.Height = c.pageHeight - c.pageMargins.Bottom - c.pageMargins.Top
-	c.context.PageHeight = c.pageHeight
-	c.context.PageWidth = c.pageWidth
-	c.context.Margins = c.pageMargins
+	// Update DrawContext, move to upper Left corner.
+	c.DrawContext.X = c.pageMargins.Left
+	c.DrawContext.Y = c.pageMargins.Top
+	c.DrawContext.Width = c.pageWidth - c.pageMargins.Right - c.pageMargins.Left
+	c.DrawContext.Height = c.pageHeight - c.pageMargins.Bottom - c.pageMargins.Top
+	c.DrawContext.PageHeight = c.pageHeight
+	c.DrawContext.PageWidth = c.pageWidth
+	c.DrawContext.Margins = c.pageMargins
 }
 
 // NewPage adds a new Page to the Creator and sets as the active Page.
 func (c *Creator) NewPage() *model.PdfPage {
 	page := c.newPage()
 	c.pages = append(c.pages, page)
-	c.context.Page++
+	c.DrawContext.Page++
 	return page
 }
 
@@ -322,13 +322,13 @@ func (c *Creator) AddPage(page *model.PdfPage) error {
 		return err
 	}
 
-	c.context.X = mbox.Llx + c.pageMargins.Left
-	c.context.Y = c.pageMargins.Top
-	c.context.PageHeight = mbox.Ury - mbox.Lly
-	c.context.PageWidth = mbox.Urx - mbox.Llx
+	c.DrawContext.X = mbox.Llx + c.pageMargins.Left
+	c.DrawContext.Y = c.pageMargins.Top
+	c.DrawContext.PageHeight = mbox.Ury - mbox.Lly
+	c.DrawContext.PageWidth = mbox.Urx - mbox.Llx
 
 	c.pages = append(c.pages, page)
-	c.context.Page++
+	c.DrawContext.Page++
 
 	return nil
 }
@@ -358,12 +358,12 @@ func (c *Creator) RotateDeg(angleDeg int64) error {
 }
 
 func (c *Creator) GetContext() *DrawContext {
-	return &c.context
+	return &c.DrawContext
 }
 
-// Context returns the current drawing context.
+// Context returns the current drawing DrawContext.
 func (c *Creator) Context() DrawContext {
-	return c.context
+	return c.DrawContext
 }
 
 // Finalize renders all blocks to the creator pages. In addition, it takes care
@@ -394,7 +394,7 @@ func (c *Creator) Finalize() error {
 	}
 	if c.AddTOC {
 		c.initContext()
-		c.context.Page = genpages + 1
+		c.DrawContext.Page = genpages + 1
 
 		if c.genTableOfContentFunc != nil {
 			if err := c.genTableOfContentFunc(c.toc); err != nil {
@@ -403,7 +403,7 @@ func (c *Creator) Finalize() error {
 		}
 
 		// Make an estimate of the number of pages.
-		blocks, _, err := c.toc.GeneratePageBlocks(c.context)
+		blocks, _, err := c.toc.GeneratePageBlocks(c.DrawContext)
 		if err != nil {
 			common.Log.Debug("Failed to generate blocks: %v", err)
 			return err
@@ -457,7 +457,7 @@ func (c *Creator) Finalize() error {
 
 		// Create TOC pages.
 		var tocpages []*model.PdfPage
-		blocks, _, _ := c.toc.GeneratePageBlocks(c.context)
+		blocks, _, _ := c.toc.GeneratePageBlocks(c.DrawContext)
 
 		for _, block := range blocks {
 			block.SetPos(0, 0)
@@ -584,30 +584,30 @@ func (c *Creator) Finalize() error {
 	return nil
 }
 
-// MoveTo moves the drawing context to absolute coordinates (x, y).
+// MoveTo moves the drawing DrawContext to absolute coordinates (x, y).
 func (c *Creator) MoveTo(x, y float64) {
-	c.context.X = x
-	c.context.Y = y
+	c.DrawContext.X = x
+	c.DrawContext.Y = y
 }
 
-// MoveX moves the drawing context to absolute position x.
+// MoveX moves the drawing DrawContext to absolute position x.
 func (c *Creator) MoveX(x float64) {
-	c.context.X = x
+	c.DrawContext.X = x
 }
 
-// MoveY moves the drawing context to absolute position y.
+// MoveY moves the drawing DrawContext to absolute position y.
 func (c *Creator) MoveY(y float64) {
-	c.context.Y = y
+	c.DrawContext.Y = y
 }
 
-// MoveRight moves the drawing context Right by relative displacement dx (negative goes Left).
+// MoveRight moves the drawing DrawContext Right by relative displacement dx (negative goes Left).
 func (c *Creator) MoveRight(dx float64) {
-	c.context.X += dx
+	c.DrawContext.X += dx
 }
 
-// MoveDown moves the drawing context down by relative displacement dy (negative goes up).
+// MoveDown moves the drawing DrawContext down by relative displacement dy (negative goes up).
 func (c *Creator) MoveDown(dy float64) {
-	c.context.Y += dy
+	c.DrawContext.Y += dy
 }
 
 // Draw processes the specified Drawable widget and generates blocks that can
@@ -622,7 +622,7 @@ func (c *Creator) Draw(d Drawable) error {
 		c.NewPage()
 	}
 
-	blocks, ctx, err := d.GeneratePageBlocks(c.context)
+	blocks, ctx, err := d.GeneratePageBlocks(c.DrawContext)
 	if err != nil {
 		return err
 	}
@@ -646,9 +646,9 @@ func (c *Creator) Draw(d Drawable) error {
 	}
 
 	// Inner elements can affect X, Y position and available height.
-	c.context.X = ctx.X
-	c.context.Y = ctx.Y
-	c.context.Height = ctx.PageHeight - ctx.Y - ctx.Margins.Bottom
+	c.DrawContext.X = ctx.X
+	c.DrawContext.Y = ctx.Y
+	c.DrawContext.Height = ctx.PageHeight - ctx.Y - ctx.Margins.Bottom
 
 	return nil
 }

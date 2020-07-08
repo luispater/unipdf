@@ -132,7 +132,7 @@ func (l *List) SetMargins(left, right, top, bottom float64) {
 }
 
 // Width is not used. The list component is designed to fill into the available
-// width depending on the context. Returns 0.
+// width depending on the DrawContext. Returns 0.
 func (l *List) Width() float64 {
 	return 0
 }

@@ -245,7 +245,7 @@ func (t *TOC) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, error)
 	}
 
 	if t.positioning.isAbsolute() {
-		// If absolute: return original context.
+		// If absolute: return original DrawContext.
 		return blocks, origCtx, nil
 
 	}

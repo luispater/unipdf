@@ -186,7 +186,7 @@ func (chap *Chapter) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 	origCtx := ctx
 
 	if chap.positioning.isRelative() {
-		// Update context.
+		// Update DrawContext.
 		ctx.X += chap.margins.Left
 		ctx.Y += chap.margins.Top
 		ctx.Width -= chap.margins.Left + chap.margins.Right
@@ -256,7 +256,7 @@ func (chap *Chapter) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 	}
 
 	if chap.positioning.isAbsolute() {
-		// If absolute: return original context.
+		// If absolute: return original DrawContext.
 		return blocks, origCtx, nil
 	}
 

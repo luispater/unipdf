@@ -18,7 +18,7 @@ func (p *PageBreak) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 		NewBlock(ctx.PageWidth, ctx.PageHeight),
 	}
 
-	// New Page. Place context in upper Left corner (with Margins).
+	// New Page. Place DrawContext in upper Left corner (with Margins).
 	ctx.Page++
 	newContext := ctx
 	newContext.Y = ctx.Margins.Top

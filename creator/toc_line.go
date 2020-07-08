@@ -12,7 +12,7 @@ import (
 )
 
 // TOCLine represents a line in a table of contents.
-// The component can be used both in the context of a
+// The component can be used both in the DrawContext of a
 // table of contents component and as a standalone component.
 // The representation of a table of contents line is as follows:
 //       [number] [title]      [separator] [page]
@@ -257,7 +257,7 @@ func (tl *TOCLine) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, e
 	}
 
 	if tl.positioning.isAbsolute() {
-		// If absolute: return original context.
+		// If absolute: return original DrawContext.
 		return blocks, origCtx, nil
 	}
 

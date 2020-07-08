@@ -95,7 +95,7 @@ func (div *Division) Height() float64 {
 }
 
 // Width is not used. Not used as a Division element is designed to fill into available width depending on
-// context.  Returns 0.
+// DrawContext.  Returns 0.
 func (div *Division) Width() float64 {
 	return 0
 }
@@ -108,14 +108,14 @@ func (div *Division) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 	origCtx := ctx
 
 	if div.positioning.isRelative() {
-		// Update context.
+		// Update DrawContext.
 		ctx.X += div.margins.Left
 		ctx.Y += div.margins.Top
 		ctx.Width -= div.margins.Left + div.margins.Right
 		ctx.Height -= div.margins.Top + div.margins.Bottom
 	}
 
-	// Set the inline mode of the division to the context.
+	// Set the inline mode of the division to the DrawContext.
 	ctx.Inline = div.inline
 
 	// Draw.
@@ -181,7 +181,7 @@ func (div *Division) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 		ctx = updCtx
 	}
 
-	// Restore the original inline mode of the context.
+	// Restore the original inline mode of the DrawContext.
 	ctx.Inline = origCtx.Inline
 
 	if div.positioning.isRelative() {
@@ -190,7 +190,7 @@ func (div *Division) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext,
 	}
 
 	if div.positioning.isAbsolute() {
-		// If absolute: return original context.
+		// If absolute: return original DrawContext.
 		return pageblocks, origCtx, nil
 	}
 

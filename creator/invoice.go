@@ -882,7 +882,7 @@ func (i *Invoice) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, er
 	}
 
 	if i.positioning.isAbsolute() {
-		// If absolute: return original context.
+		// If absolute: return original DrawContext.
 		return blocks, origCtx, nil
 	}
 

@@ -19,7 +19,7 @@ import (
 )
 
 // StyledParagraph represents text drawn with a specified font and can wrap across lines and pages.
-// By default occupies the available width in the drawing context.
+// By default occupies the available width in the drawing DrawContext.
 type StyledParagraph struct {
 	// Text chunks with styles that compose the paragraph.
 	chunks []*TextChunk
@@ -41,7 +41,7 @@ type StyledParagraph struct {
 	wrapWidth  float64
 
 	// defaultWrap defines whether wrapping has been defined explictly or whether default behavior should
-	// be observed. Default behavior depends on context: normally wrap is expected, except for example in
+	// be observed. Default behavior depends on DrawContext: normally wrap is expected, except for example in
 	// table cells wrapping is off by default.
 	defaultWrap bool
 
@@ -536,7 +536,7 @@ func (p *StyledParagraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawCon
 		p.beforeRender(p, ctx)
 	}
 
-	// Wrap paragraph chunks into lines, based on the available context width.
+	// Wrap paragraph chunks into lines, based on the available DrawContext width.
 	if err := p.wrapText(); err != nil {
 		return nil, ctx, err
 	}
@@ -575,7 +575,7 @@ func (p *StyledParagraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawCon
 		ctx.Width = origContext.Width
 		return blocks, ctx, nil
 	}
-	// Absolute: not changing the context.
+	// Absolute: not changing the DrawContext.
 	return blocks, origContext, nil
 }
 
@@ -892,7 +892,7 @@ func drawStyledParagraphOnBlock(blk *Block, p *StyledParagraph, lines [][]*TextC
 		ctx.Y += pHeight
 		ctx.Height -= pHeight
 
-		// If the division is inline, calculate context new X coordinate.
+		// If the division is inline, calculate DrawContext new X coordinate.
 		if ctx.Inline {
 			ctx.X += p.Width() + p.margins.Right
 		}

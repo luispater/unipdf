@@ -16,7 +16,7 @@ import (
 )
 
 // Paragraph represents text drawn with a specified font and can wrap across lines and pages.
-// By default it occupies the available width in the drawing context.
+// By default it occupies the available width in the drawing DrawContext.
 type Paragraph struct {
 	// The input utf-8 text as a string (series of runes).
 	text string
@@ -41,7 +41,7 @@ type Paragraph struct {
 	wrapWidth  float64
 
 	// defaultWrap defines whether wrapping has been defined explictly or whether default behavior should
-	// be observed. Default behavior depends on context: normally wrap is expected, except for example in
+	// be observed. Default behavior depends on DrawContext: normally wrap is expected, except for example in
 	// table cells wrapping is off by default.
 	defaultWrap bool
 
@@ -289,7 +289,7 @@ func (p *Paragraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 		p.SetWidth(ctx.Width)
 
 		if p.Height() > ctx.Height {
-			// Goes out of the bounds.  Write on a new template instead and create a new context at
+			// Goes out of the bounds.  Write on a new template instead and create a new DrawContext at
 			// upper Left corner.
 			// TODO: Handle case when Paragraph is larger than the Page...
 			// Should be fine if we just break on the paragraph, i.e. splitting it up over 2+ pages
@@ -329,7 +329,7 @@ func (p *Paragraph) GeneratePageBlocks(ctx DrawContext) ([]*Block, DrawContext, 
 		ctx.Width = origContext.Width
 		return blocks, ctx, nil
 	}
-	// Absolute: not changing the context.
+	// Absolute: not changing the DrawContext.
 	return blocks, origContext, nil
 }
 
@@ -461,7 +461,7 @@ func drawParagraphOnBlock(blk *Block, p *Paragraph, ctx DrawContext) (DrawContex
 		ctx.Y += pHeight
 		ctx.Height -= pHeight
 
-		// If the division is inline, calculate context new X coordinate.
+		// If the division is inline, calculate DrawContext new X coordinate.
 		if ctx.Inline {
 			ctx.X += p.Width() + p.margins.Right
 		}
